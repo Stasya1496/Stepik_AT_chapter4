@@ -2,20 +2,10 @@ import time
 
 import pytest
 
+from .pages.login_page import LoginPage
 from .pages.basket_page import BasketPage
 from .pages.product_page import ProductPage
-
-
-@pytest.mark.skip
-def test_guest_can_add_product_to_basket(browser):
-    link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'
-    page = ProductPage(browser, link)
-    page.open()
-    page.should_be_add_to_basket_form()
-    page.add_to_basket()
-    page.solve_quiz_and_get_code()
-    page.should_be_add_the_right_product()
-    page.should_be_right_cost_of_product()
+import faker
 
 
 @pytest.mark.skip
@@ -85,6 +75,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page.go_to_login_page()
 
 
+@pytest.mark.skip
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
     page = ProductPage(browser, link)
@@ -94,3 +85,30 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page.should_be_basket_page()
     basket_page.should_not_be_product_in_basket()
     basket_page.should_be_empty_message()
+
+
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/ru/accounts/login/'
+        page = LoginPage(browser, link)
+        page.open()
+        f = faker.Faker()
+        page.register_new_user(f.email(), 'dfsdsddfsdffswfsf')
+        page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_be_add_to_basket_form()
+        page.add_to_basket()
+        page.solve_quiz_and_get_code()
+        page.should_be_add_the_right_product()
+        page.should_be_right_cost_of_product()
