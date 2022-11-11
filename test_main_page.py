@@ -1,12 +1,9 @@
 import pytest
-from selenium.webdriver.common.by import By
-
 from .pages.basket_page import BasketPage
 from .pages.main_page import MainPage
 from .pages.login_page import LoginPage
 
 
-@pytest.mark.skip
 @pytest.mark.login_guest
 class TestLoginFromMainPage():
     def test_guest_can_go_to_login_page(self, browser):
