@@ -1,5 +1,3 @@
-import time
-
 import pytest
 from .pages.login_page import LoginPage
 from .pages.basket_page import BasketPage
@@ -79,7 +77,6 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     page.open()
     page.go_to_basket_page()
     basket_page = BasketPage(browser, browser.current_url)
-    time.sleep(5)
     basket_page.should_be_basket_page()
     basket_page.should_not_be_product_in_basket()
     basket_page.should_be_empty_message()

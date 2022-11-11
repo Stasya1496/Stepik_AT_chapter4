@@ -4,7 +4,7 @@ from .locators import BasketPageLocators
 
 class BasketPage(BasePage):
     def should_be_empty_message(self):
-        # Поверка, что есть сообщение Your basket is empty.
+        # Проверка, что есть сообщение Your basket is empty.
         message = self.browser.find_elements(*BasketPageLocators.EMPTY_MESSAGE)[0].text
         assert ('Ваша корзина пуста' in message) or ('Your basket is empty' in message), "basket isn't empty"
 
@@ -21,6 +21,6 @@ class BasketPage(BasePage):
         assert 'basket' in self.browser.current_url
 
     def should_be_basket_header(self):
-        # Поверка, что есть загловок "Корзина"
+        # Проверка, что есть заголовок "Корзина"
         header = self.browser.find_elements(*BasketPageLocators.BASKET_HEADER)[0].text
         assert header == 'Корзина' or header == 'Basket', "This page doesn't contain header 'Корзина'"
